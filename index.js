@@ -20,7 +20,8 @@ client.on('message', msg => {
       DBclient.query(q.Map(q.Paginate(q.Match(q.Index(String(shareId).substring(0, 4)), shareId)), q.Lambda("imageView", q.Get(q.Var("imageView")))))
       .then((response) => {
         msg.reply(`This is your ${response.data[0].data.name} Banana Card!`)
-        msg.channel.send(response.data[0].data.imageDownload)
+        msg.channel.send(response.data[0].data.imageDownload, {files: [{ attachment: response.data[0].data.imageDownload, name: `${response.data[0].data.name}.mp4` }]})
+
         
       }).catch((error) => {
         msg.reply("Sorry, the token id you enter does not exist in the database.\nPlease confirm the format is correct (ex. BAYC-0001, MAYC-00001) or DM us.");
