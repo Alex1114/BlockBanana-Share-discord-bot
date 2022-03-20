@@ -17,10 +17,17 @@ client.on('message', msg => {
     }
     if (String(msg.content)[4] == "-") {
       shareId = msg.content;
-      DBclient.query(q.Map(q.Paginate(q.Match(q.Index(String(shareId).substring(0, 4)), shareId)), q.Lambda("imageView", q.Get(q.Var("imageView")))))
+      tokenId = parseInt(String(shareId).substring(5))
+      if (String(shareId).substring(0, 4) == "MAYC") {
+        token_name = String(shareId).substring(0, 4) + "-" + String(tokenId).padStart(5, "0")
+      } else {
+        token_name = String(shareId).substring(0, 4) + "-" + String(tokenId).padStart(4, "0")
+      }
+      
+      DBclient.query(q.Map(q.Paginate(q.Match(q.Index(String(shareId).substring(0, 4)), token_name)), q.Lambda("imageView", q.Get(q.Var("imageView")))))
       .then((response) => {
         msg.reply(`This is your ${response.data[0].data.name} Banana Card!`)
-        a = msg.channel.send(response.data[0].data.imageDownload, {files: [{ attachment: response.data[0].data.imageDownload, name: `${response.data[0].data.name}.mp4` }]})
+        a = msg.channel.send({files: [{ attachment: response.data[0].data.imageDownload, name: `${response.data[0].data.name}.mp4` }]})
 
         
       }).catch((error) => {
