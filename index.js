@@ -20,7 +20,7 @@ client.on('message', msg => {
       DBclient.query(q.Map(q.Paginate(q.Match(q.Index(String(shareId).substring(0, 4)), shareId)), q.Lambda("imageView", q.Get(q.Var("imageView")))))
       .then((response) => {
         msg.reply(`This is your ${response.data[0].data.name} Banana Card!`)
-        msg.channel.send(response.data[0].data.imageDownload, {files: [{ attachment: response.data[0].data.imageDownload, name: `${response.data[0].data.name}.mp4` }]})
+        a = msg.channel.send(response.data[0].data.imageDownload, {files: [{ attachment: response.data[0].data.imageDownload, name: `${response.data[0].data.name}.mp4` }]})
 
         
       }).catch((error) => {
